@@ -3,12 +3,12 @@ import grpc
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict, Any, Protocol
 import pyqrcode
-from wyron_proto import auth_pb2
-from wyron_proto import auth_pb2_grpc
-from wyron_proto import server_pb2
-from wyron_proto import server_pb2_grpc
-from wyron_proto import user_pb2
-from wyron_proto import user_pb2_grpc
+from .wyron_proto import auth_pb2
+from .wyron_proto import auth_pb2_grpc
+from .wyron_proto import server_pb2
+from .wyron_proto import server_pb2_grpc
+from .wyron_proto import user_pb2
+from .wyron_proto import user_pb2_grpc
 from google.protobuf.empty_pb2 import Empty
 
 
