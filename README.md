@@ -3,7 +3,7 @@
 # 🚀 Wyron
 ### High-Performance WireGuard Management Panel (Go Powered)
 
-<img src="assets/banner.png" width="90%" />
+<img src="assets/wyron-full.png" width="10%" />
 
 [![Go](https://img.shields.io/badge/Built%20With-Go-00ADD8?logo=go&logoColor=white)]
 [![API](https://img.shields.io/badge/API-REST%20%26%20gRPC-blue)]
@@ -17,13 +17,13 @@
 ## 🖼 پیش‌نمایش پنل
 
 <p align="center">
-  <img src="assets/panel-1.png" width="45%" />
-  <img src="assets/panel-2.png" width="45%" />
+  <img src="assets/panel-1.png" height="300" style="margin:10px;" />
+  <img src="assets/panel-4.png" height="300" style="margin:10px;" />
 </p>
 
 <p align="center">
-  <img src="assets/panel-3.png" width="45%" />
-  <img src="assets/panel-4.png" width="45%" />
+  <img src="assets/panel-3.png" height="300" style="margin:10px;" />
+  <img src="assets/panel-2.png" height="300" style="margin:10px;" />
 </p>
 
 ---
