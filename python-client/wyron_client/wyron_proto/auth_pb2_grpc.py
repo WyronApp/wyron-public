@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-from wyron_proto import auth_pb2 as auth__pb2
+from .wyron_proto import auth_pb2 as auth__pb2
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 GRPC_GENERATED_VERSION = '1.78.0'
