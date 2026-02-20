@@ -1,0 +1,1032 @@
+basePath: /api
+definitions:
+  auth.CreateAdminRequest:
+    properties:
+      password:
+        minLength: 8
+        type: string
+      username:
+        minLength: 3
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  auth.CreateAdminResponse:
+    properties:
+      ok:
+        type: boolean
+    type: object
+  auth.ErrorResponse:
+    properties:
+      error:
+        example: invalid credentials
+        type: string
+      ok:
+        example: false
+        type: boolean
+    type: object
+  auth.LoginRequest:
+    properties:
+      password:
+        minLength: 8
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  auth.LoginResponse:
+    properties:
+      ok:
+        example: true
+        type: boolean
+      token:
+        type: string
+    type: object
+  auth.MeResponse:
+    properties:
+      ok:
+        type: boolean
+      user:
+        type: string
+    type: object
+  commons.ErrRes:
+    properties:
+      details:
+        example: router connection timeout
+        type: string
+      error:
+        example: failed to create peer
+        type: string
+      ok:
+        example: false
+        type: boolean
+    type: object
+  commons.OkRes:
+    properties:
+      ok:
+        example: true
+        type: boolean
+    type: object
+  commons.UserResponse:
+    properties:
+      ok:
+        example: true
+        type: boolean
+      result:
+        $ref: '#/definitions/service.UserDetails'
+    type: object
+  models.PeerState:
+    properties:
+      allowed_address:
+        type: string
+      interface:
+        type: string
+      private_key:
+        type: string
+      server_id:
+        type: string
+    type: object
+  models.Server:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: integer
+      display_name:
+        type: string
+      interfaces:
+        items:
+          $ref: '#/definitions/models.WireGuardInterface'
+        type: array
+      name:
+        type: string
+      username:
+        type: string
+    type: object
+  models.WireGuardInterface:
+    properties:
+      created_at:
+        type: integer
+      display_name:
+        type: string
+      dns:
+        type: string
+      endpoint:
+        type: string
+      name:
+        type: string
+      port:
+        type: integer
+      public_key:
+        type: string
+      subnet:
+        type: string
+    type: object
+  server.DeleteServerRes:
+    properties:
+      name:
+        example: router-1
+        type: string
+      ok:
+        example: true
+        type: boolean
+    type: object
+  server.ListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Server'
+        type: array
+      ok:
+        example: true
+        type: boolean
+    type: object
+  server.Response:
+    properties:
+      data:
+        $ref: '#/definitions/models.Server'
+      ok:
+        example: true
+        type: boolean
+    type: object
+  server.UpdateInterfaceRequest:
+    properties:
+      DNS:
+        type: string
+      display_name:
+        type: string
+      endpoint:
+        type: string
+      name:
+        type: string
+    type: object
+  server.UpdateServerInterfaceResponse:
+    properties:
+      interface:
+        $ref: '#/definitions/models.WireGuardInterface'
+      ok:
+        example: true
+        type: boolean
+    type: object
+  server.UpdateServerRequest:
+    properties:
+      address:
+        type: string
+      display_name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  server.UpdateServerRes:
+    properties:
+      name:
+        example: router-1
+        type: string
+      ok:
+        example: true
+        type: boolean
+    type: object
+  service.UserDetails:
+    properties:
+      active:
+        type: boolean
+      created_at:
+        type: integer
+      created_by:
+        type: string
+      duration_seconds:
+        type: integer
+      first_connected_at:
+        type: integer
+      last_connected_at:
+        type: integer
+      peers:
+        items:
+          $ref: '#/definitions/models.PeerState'
+        type: array
+      social_id:
+        type: integer
+      subscriptionToken:
+        type: string
+      traffic_limit:
+        type: integer
+      usage:
+        type: integer
+      user_key:
+        type: string
+    type: object
+  user.AccessRequest:
+    properties:
+      interfaces:
+        example:
+        - wg0
+        - wg1
+        items:
+          type: string
+        type: array
+      server_id:
+        example: router-1
+        type: string
+    type: object
+  user.CreateUserRequest:
+    properties:
+      duration_seconds:
+        description: 30 days
+        example: 2592000
+        type: integer
+      endpoint_port:
+        example: 51820
+        type: integer
+      server_access:
+        items:
+          $ref: '#/definitions/user.AccessRequest'
+        type: array
+      social_id:
+        example: 123456789
+        type: integer
+      traffic_limit:
+        description: 1GB
+        example: 1073741824
+        type: integer
+      user_key:
+        example: user123
+        type: string
+    type: object
+  user.EditUserRequest:
+    properties:
+      duration_seconds:
+        type: integer
+      social_id:
+        type: integer
+      traffic_limit:
+        type: integer
+    type: object
+  user.EnableUserResponse:
+    properties:
+      ok:
+        example: true
+        type: boolean
+    type: object
+  user.ListUsersResponse:
+    properties:
+      count:
+        example: 10
+        type: integer
+      limit:
+        example: 50
+        type: integer
+      ok:
+        example: true
+        type: boolean
+      result:
+        items:
+          $ref: '#/definitions/service.UserDetails'
+        type: array
+      skip:
+        example: 0
+        type: integer
+    type: object
+  user.MetricsResponse:
+    properties:
+      active_users:
+        type: integer
+      disabled_users:
+        type: integer
+      expired_users:
+        type: integer
+      limited_users:
+        type: integer
+      ok:
+        type: boolean
+      total_traffic_limit:
+        type: integer
+      total_usage:
+        type: integer
+      total_users:
+        type: integer
+    type: object
+  user.RevokeSubTokenRequest:
+    properties:
+      user_key:
+        example: user123
+        type: string
+    type: object
+info:
+  contact: {}
+  description: API documentation for Wyron Panel
+  title: Wyron Panel API
+  version: "1.0"
+paths:
+  /auth/create-admin:
+    post:
+      consumes:
+      - application/json
+      description: Create a new admin account. Only accessible from console.
+      parameters:
+      - description: Admin info
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.CreateAdminRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.CreateAdminResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      summary: Create new admin (internal only)
+      tags:
+      - auth
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate admin and receive JWT token
+      parameters:
+      - description: Login credentials
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      summary: Admin login
+      tags:
+      - auth
+  /auth/logout:
+    post:
+      description: Clears authentication cookie
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      summary: Logout user
+      tags:
+      - auth
+  /auth/me:
+    get:
+      description: Returns authenticated user from request context
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/auth.MeResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      summary: Get current authenticated user
+      tags:
+      - auth
+  /servers:
+    get:
+      description: Retrieve all registered servers in the system
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.ListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: List all servers
+      tags:
+      - servers
+    post:
+      consumes:
+      - application/json
+      description: Connects to a RouterOS server, validates credentials, stores it,
+        and reloads router configuration
+      parameters:
+      - description: Server configuration
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateServerRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/server.UpdateServerRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Create or update server
+      tags:
+      - servers
+  /servers/{id}:
+    delete:
+      description: Deletes a server by its ID and reloads the router configuration
+      parameters:
+      - description: Server ID
+        example: router-1
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.DeleteServerRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Delete server
+      tags:
+      - servers
+    get:
+      description: Retrieve a specific server using its unique ID
+      parameters:
+      - description: Server ID
+        example: server-123
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Get server by ID
+      tags:
+      - servers
+  /servers/{id}/interfaces:
+    post:
+      consumes:
+      - application/json
+      description: Update or sync a WireGuard interface from RouterOS and reload configuration
+      parameters:
+      - description: Server ID
+        example: router-1
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Interface update request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/server.UpdateInterfaceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/server.UpdateServerInterfaceResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Update WireGuard interface on server
+      tags:
+      - servers
+  /servers/{id}/interfaces/{name}:
+    delete:
+      description: Remove a WireGuard interface from server configuration and reload
+        router
+      parameters:
+      - description: Server ID
+        example: router-1
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Interface Name
+        example: wg0
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/commons.OkRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Delete WireGuard interface from server
+      tags:
+      - servers
+  /sub/{token}:
+    get:
+      description: Returns user subscription details using token (public endpoint)
+      parameters:
+      - description: Subscription token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/commons.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      summary: Get subscription by token
+      tags:
+      - subscription
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves paginated list of users with filtering, status, search,
+        sorting and pagination support
+      parameters:
+      - description: Filter by social ID
+        example: 123456789
+        in: query
+        name: social_id
+        type: integer
+      - description: Filter by user status
+        enum:
+        - active
+        - disabled
+        - expired
+        - limited
+        - on_hold
+        example: active
+        in: query
+        name: status
+        type: string
+      - description: Search by user_key (case-insensitive)
+        example: user123
+        in: query
+        name: search
+        type: string
+      - default: 50
+        description: Maximum number of users to return (max 100)
+        example: 25
+        in: query
+        name: limit
+        type: integer
+      - default: 0
+        description: Number of users to skip for pagination
+        example: 0
+        in: query
+        name: skip
+        type: integer
+      - default: created_at
+        description: Sort field
+        enum:
+        - created_at
+        - usage
+        - user_key
+        example: created_at
+        in: query
+        name: sort
+        type: string
+      - default: desc
+        description: Sort order
+        enum:
+        - asc
+        - desc
+        example: desc
+        in: query
+        name: order
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.ListUsersResponse'
+        "400":
+          description: Invalid query parameter
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: List VPN users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user, generates WireGuard peers on selected servers
+        and interfaces, and stores peer state
+      parameters:
+      - description: User configuration
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/commons.UserResponse'
+        "400":
+          description: Invalid request or user already exists
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "404":
+          description: Server or interface not found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "422":
+          description: No peers created
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Create user
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      description: Deletes a user and removes all associated WireGuard peers from
+        all connected servers
+      parameters:
+      - description: User Key
+        example: user123
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/commons.OkRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Delete user
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a user and all associated WireGuard peer states
+      parameters:
+      - description: User Key
+        example: user123
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/commons.UserResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Get user
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: Updates user fields and optionally enables/disables peers on servers
+      parameters:
+      - description: User Key
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User update data
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.EditUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/commons.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Edit user
+      tags:
+      - users
+  /users/{id}/disable:
+    post:
+      consumes:
+      - application/json
+      description: Disables a user account and disables all associated WireGuard peers
+        on all servers
+      parameters:
+      - description: User Key
+        example: user123
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/commons.OkRes'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Disable user
+      tags:
+      - users
+  /users/{id}/enable:
+    post:
+      consumes:
+      - application/json
+      description: Enables a user account and enables all associated WireGuard peers
+        across connected servers
+      parameters:
+      - description: User Key
+        example: user123
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.EnableUserResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Enable user
+      tags:
+      - users
+  /users/{id}/reset-usage:
+    post:
+      consumes:
+      - application/json
+      description: Resets the traffic usage of a user and re-enables all associated
+        WireGuard peers on all connected servers
+      parameters:
+      - description: User Key
+        example: user123
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/commons.OkRes'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Reset user traffic usage
+      tags:
+      - users
+  /users/{id}/revoke-sub:
+    post:
+      consumes:
+      - application/json
+      description: Regenerates (revokes) the subscription token for a user
+      parameters:
+      - description: User key
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/user.RevokeSubTokenRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/commons.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Revoke subscription token
+      tags:
+      - users
+  /users/metrics:
+    get:
+      consumes:
+      - application/json
+      description: Returns user statistics calculated from all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.MetricsResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/commons.ErrRes'
+      security:
+      - BearerAuth: []
+      summary: Get user metrics
+      tags:
+      - users
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
