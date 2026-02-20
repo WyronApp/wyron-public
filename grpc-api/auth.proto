@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "wyron-panel/api/grpc/proto";
+import "google/protobuf/empty.proto";
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+
+message CreateAdminRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message MeResponse {
+  string username = 1;
+}
+
+service AuthService {
+  rpc Login (LoginRequest) returns (LoginResponse);
+  rpc CreateAdmin (CreateAdminRequest) returns (google.protobuf.Empty);
+  rpc Me (google.protobuf.Empty) returns (MeResponse);
+}

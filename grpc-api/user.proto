@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package user;
+
+option go_package = "wyron-panel/api/grpc/proto";
+
+import "google/protobuf/empty.proto";
+
+message User {
+  string user_key = 1;
+  int64 created_at = 2;
+  int64 first_connected_at = 3;
+  int64 last_connected_at = 4;
+  uint64 usage = 5;
+  uint64 traffic_limit = 6;
+  int32 duration_seconds = 7;
+  int64 social_id = 8;
+  bool active = 9;
+  repeated Peer peers = 10;
+  string created_by = 11;
+  string sub_token = 12;
+}
+
+message Peer {
+  string server_id = 1;
+  string interface = 2;
+  string private_key = 3;
+  string allowed_address = 4;
+}
+
+message UserKeyRequest {
+  string user_key = 1;
+}
+
+message AccessRequest {
+  string server_id = 1;
+  repeated string interfaces = 2;
+}
+
+message CreateUserRequest {
+  string user_key = 1;
+  uint64 traffic_limit = 2;
+  int32 duration_seconds = 3;
+  int64 social_id = 4;
+  int32 endpoint_port = 5;
+  repeated AccessRequest server_access = 6;
+}
+
+message EditUserRequest {
+  string user_key = 1;
+
+  optional uint64 traffic_limit = 2;
+  optional int32 duration_seconds = 3;
+  optional int64 social_id = 4;
+}
+
+message ListUsersRequest {
+  optional int64 social_id = 1;
+  optional string status = 2;
+  optional string search = 3;
+  int32 limit = 4;
+  int32 skip = 5;
+  string sort = 6;
+  string order = 7;
+}
+
+
+message ListUsersResponse {
+  int64 count = 1;
+  int64 limit = 2;
+  int64 skip = 3;
+  repeated User users = 4;
+}
+
+message MetricsResponse {
+  int64 total_users = 1;
+  int64 active_users = 2;
+  int64 disabled_users = 3;
+  int64 expired_users = 4;
+  int64 limited_users = 5;
+  uint64 total_usage = 6;
+  uint64 total_traffic_limit = 7;
+}
+
+service UserService {
+  rpc Create (CreateUserRequest) returns (User);
+  rpc Get (UserKeyRequest) returns (User);
+  rpc Edit (EditUserRequest) returns (User);
+  rpc Delete (UserKeyRequest) returns (google.protobuf.Empty);
+  rpc Enable (UserKeyRequest) returns (google.protobuf.Empty);
+  rpc Disable (UserKeyRequest) returns (google.protobuf.Empty);
+  rpc ResetUsage (UserKeyRequest) returns (google.protobuf.Empty);
+  rpc List (ListUsersRequest) returns (ListUsersResponse);
+  rpc Metrics (google.protobuf.Empty) returns (MetricsResponse);
+  rpc RevokeSubToken (UserKeyRequest) returns (User);
+}
