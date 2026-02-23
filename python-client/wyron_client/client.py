@@ -356,11 +356,18 @@ class WyronGrpcClient:
         self.timeout = timeout
         self.token: Optional[str] = None
 
+        options = [
+            ("grpc.keepalive_time_ms", 60000),        
+            ("grpc.keepalive_timeout_ms", 10000),       
+            ("grpc.keepalive_permit_without_calls", 1),
+            ("grpc.http2.max_pings_without_data", 0), 
+        ]
+
         if secure:
             creds = grpc.ssl_channel_credentials()
-            self.channel = grpc.secure_channel(host, creds)
+            self.channel = grpc.secure_channel(host, creds, options=options)
         else:
-            self.channel = grpc.insecure_channel(host)
+            self.channel = grpc.insecure_channel(host, options=options)
 
         self.auth = auth_pb2_grpc.AuthServiceStub(self.channel)
         self.server = server_pb2_grpc.ServerServiceStub(self.channel)
