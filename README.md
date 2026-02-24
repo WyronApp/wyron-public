@@ -60,12 +60,12 @@ https://t.me/wyronapp
 
 ---
 
-## 📦 ادامه آموزش نصب
+## 📦 ادامه آموزش نصب دستی 
 
 پس از دریافت فایل و لایسنس، می‌توانید راهنمای کامل نصب و راه‌اندازی را در بخش زیر مشاهده کنید:
 
-[ادامه نصب](https://github.com/WyronApp/wyron-public/tree/main/install)
-
+[ادامه نصب دستی](https://github.com/WyronApp/wyron-public/tree/main/install)
+[یا ادامه نصب با اسکریپت](https://github.com/WyronApp/wyron-public/tree/main/install-script)
 ---
 
 ## 🔥 ویژگی‌ها
