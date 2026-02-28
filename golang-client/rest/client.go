@@ -7,10 +7,13 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
+
+	"golang.org/x/net/proxy"
 )
 
 type Client struct {
@@ -23,7 +26,7 @@ type Client struct {
 	timeout time.Duration
 }
 
-func NewClient(baseURL, username, password string, timeout time.Duration) (*Client, error) {
+func NewClient(baseURL, username, password, proxyURL string, timeout time.Duration) (*Client, error) {
 	if baseURL == "" || username == "" || password == "" {
 		return nil, errors.New("baseURL/username/password required")
 	}
@@ -34,6 +37,34 @@ func NewClient(baseURL, username, password string, timeout time.Duration) (*Clie
 	// http2: Go by default tries HTTP/2 over TLS; for h2c you’d need extra setup.
 	tr := &http.Transport{
 		ForceAttemptHTTP2: true,
+		DialContext: (&net.Dialer{
+			Timeout:   timeout,
+			KeepAlive: 30 * time.Second,
+		}).DialContext,
+
+		TLSHandshakeTimeout:   10 * time.Second,
+		ResponseHeaderTimeout: timeout,
+		ExpectContinueTimeout: 1 * time.Second,
+	}
+
+	if proxyURL != "" {
+		u, err := url.Parse(proxyURL)
+		if err != nil {
+			return nil, err
+		}
+
+		if u.Scheme == "http" || u.Scheme == "https" {
+			tr.Proxy = http.ProxyURL(u)
+		} else {
+			dialer, err := proxy.FromURL(u, proxy.Direct)
+			if err != nil {
+				return nil, err
+			}
+			tr.Proxy = nil
+			tr.DialContext = func(ctx context.Context, network, addr string) (net.Conn, error) {
+				return dialer.Dial(network, addr)
+			}
+		}
 	}
 
 	c := &Client{

@@ -3,10 +3,13 @@ package grpc
 import (
 	"context"
 	"errors"
+	"net"
+	"net/url"
 	"sync"
 	"time"
 
 	pb "github.com/wyronapp/wyron-public/golang-client/grpc/proto"
+	"golang.org/x/net/proxy"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials"
@@ -19,6 +22,7 @@ type Config struct {
 	Host     string
 	Username string
 	Password string
+	ProxyURL string
 
 	Timeout time.Duration
 	Secure  bool
@@ -57,6 +61,24 @@ func NewClient(cfg Config) (*Client, error) {
 		}
 	} else {
 		opts = append(opts, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	}
+
+	if cfg.ProxyURL != "" {
+		proxyURL, err := url.Parse(cfg.ProxyURL)
+		if err != nil {
+			return nil, err
+		}
+
+		dialer, err := proxy.FromURL(proxyURL, proxy.Direct)
+		if err != nil {
+			return nil, err
+		}
+
+		opts = append(opts, grpc.WithContextDialer(
+			func(ctx context.Context, addr string) (net.Conn, error) {
+				return dialer.Dial("tcp", addr)
+			},
+		))
 	}
 
 	conn, err := grpc.NewClient(cfg.Host, opts...)
