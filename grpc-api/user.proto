@@ -42,8 +42,7 @@ message CreateUserRequest {
   uint64 traffic_limit = 2;
   int32 duration_seconds = 3;
   int64 social_id = 4;
-  int32 endpoint_port = 5;
-  repeated AccessRequest server_access = 6;
+  repeated AccessRequest server_access = 5;
 }
 
 message EditUserRequest {
