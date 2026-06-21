@@ -211,7 +211,7 @@ definitions:
         type: array
       social_id:
         type: integer
-      subscriptionToken:
+      sub_token:
         type: string
       traffic_limit:
         type: integer
@@ -238,9 +238,6 @@ definitions:
       duration_seconds:
         description: 30 days
         example: 2592000
-        type: integer
-      endpoint_port:
-        example: 51820
         type: integer
       server_access:
         items:
