@@ -1395,7 +1395,7 @@
                 "social_id": {
                     "type": "integer"
                 },
-                "subscriptionToken": {
+                "sub_token": {
                     "type": "string"
                 },
                 "traffic_limit": {
@@ -1435,10 +1435,6 @@
                     "description": "30 days",
                     "type": "integer",
                     "example": 2592000
-                },
-                "endpoint_port": {
-                    "type": "integer",
-                    "example": 51820
                 },
                 "server_access": {
                     "type": "array",
