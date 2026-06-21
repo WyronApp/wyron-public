@@ -324,8 +324,7 @@ type CreateUserRequest struct {
 	TrafficLimit    uint64                 `protobuf:"varint,2,opt,name=traffic_limit,json=trafficLimit,proto3" json:"traffic_limit,omitempty"`
 	DurationSeconds int32                  `protobuf:"varint,3,opt,name=duration_seconds,json=durationSeconds,proto3" json:"duration_seconds,omitempty"`
 	SocialId        int64                  `protobuf:"varint,4,opt,name=social_id,json=socialId,proto3" json:"social_id,omitempty"`
-	EndpointPort    int32                  `protobuf:"varint,5,opt,name=endpoint_port,json=endpointPort,proto3" json:"endpoint_port,omitempty"`
-	ServerAccess    []*AccessRequest       `protobuf:"bytes,6,rep,name=server_access,json=serverAccess,proto3" json:"server_access,omitempty"`
+	ServerAccess    []*AccessRequest       `protobuf:"bytes,5,rep,name=server_access,json=serverAccess,proto3" json:"server_access,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -384,13 +383,6 @@ func (x *CreateUserRequest) GetDurationSeconds() int32 {
 func (x *CreateUserRequest) GetSocialId() int64 {
 	if x != nil {
 		return x.SocialId
-	}
-	return 0
-}
-
-func (x *CreateUserRequest) GetEndpointPort() int32 {
-	if x != nil {
-		return x.EndpointPort
 	}
 	return 0
 }
@@ -757,14 +749,13 @@ const file_user_proto_rawDesc = "" +
 	"\tserver_id\x18\x01 \x01(\tR\bserverId\x12\x1e\n" +
 	"\n" +
 	"interfaces\x18\x02 \x03(\tR\n" +
-	"interfaces\"\xfa\x01\n" +
+	"interfaces\"\xd5\x01\n" +
 	"\x11CreateUserRequest\x12\x19\n" +
 	"\buser_key\x18\x01 \x01(\tR\auserKey\x12#\n" +
 	"\rtraffic_limit\x18\x02 \x01(\x04R\ftrafficLimit\x12)\n" +
 	"\x10duration_seconds\x18\x03 \x01(\x05R\x0fdurationSeconds\x12\x1b\n" +
-	"\tsocial_id\x18\x04 \x01(\x03R\bsocialId\x12#\n" +
-	"\rendpoint_port\x18\x05 \x01(\x05R\fendpointPort\x128\n" +
-	"\rserver_access\x18\x06 \x03(\v2\x13.user.AccessRequestR\fserverAccess\"\xdd\x01\n" +
+	"\tsocial_id\x18\x04 \x01(\x03R\bsocialId\x128\n" +
+	"\rserver_access\x18\x05 \x03(\v2\x13.user.AccessRequestR\fserverAccess\"\xdd\x01\n" +
 	"\x0fEditUserRequest\x12\x19\n" +
 	"\buser_key\x18\x01 \x01(\tR\auserKey\x12(\n" +
 	"\rtraffic_limit\x18\x02 \x01(\x04H\x00R\ftrafficLimit\x88\x01\x01\x12.\n" +
